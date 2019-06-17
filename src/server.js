@@ -25,6 +25,13 @@ app.use("/setupNextWeek", function(req, res) {
   // res.json();
 });
 
+app.use("/stats", function(req, res) {
+  let controller = ListController();
+  controller.getCategoryStats(req.param.id).then(function(x) {
+    res.json(x);
+  });
+});
+
 app.use("/", function(req, res) {
   var utils = require("./utils")();
   res.json(utils.getCurrentWeekListName());

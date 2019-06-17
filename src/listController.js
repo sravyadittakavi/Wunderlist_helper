@@ -10,6 +10,7 @@ const ListController = function() {
     let currentWeekId = await todoHelper.getListIdByName(currentWeek);
 
     // HACK: for testing
+    currentWeekId = 396233857;
 
     // Get next week list name
     let nextWeek = utils.getNextWeekListName();
@@ -51,8 +52,20 @@ const ListController = function() {
     return newTasks;
   };
 
+  const getCategoryStats = function(listId) {
+    if (!listId) {
+        let currentWeek = utils.getCurrentWeekListName();
+        listId = await todoHelper.getListIdByName(currentWeek);        
+    }
+
+    // Get all the tasks
+    let openTasks = await todoHelper.getAllOpenTasksFromList(currentWeekId);
+    // Compute the category stats
+  };
+
   return {
-    setupNextWeek: setupNextWeek
+    setupNextWeek: setupNextWeek,
+    getCategoryStats:getCategoryStats
   };
 };
 
