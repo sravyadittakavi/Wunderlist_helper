@@ -7,8 +7,8 @@ var wunderlistAPI = new WunderlistSDK({
 
 var allLists = [];
 const wunderlistHelper = function() {
-  const getAllLists = function() {
-    let allLists = wunderlistAPI.http.lists.all();
+  const getAllLists = async function() {
+    let allLists = await wunderlistAPI.http.lists.all();
     return allLists;
   };
   const getListIdByName = async function(name) {
@@ -27,10 +27,36 @@ const wunderlistHelper = function() {
     }
   };
 
+  const updateTaskInList = async function(task, listId) {
+    let revision = task.revision;
+    delete task.revision;
+
+    console.log(task);
+
+    let data = await wunderlistAPI.http.tasks.update(task.id, revision, task);
+    console.log(`data:`);
+    console.log(data);
+    return data;
+  };
+
+  const createTaskInList = async function(title, listId) {
+    console.log({
+      title: title,
+      list_id: listId
+    });
+    let data = await wunderlistAPI.http.tasks.create({
+      title: title,
+      list_id: listId
+    });
+
+    return data;
+  };
+
   const getAllTasksFromList = async function(listId) {
     let openTasks = await getAllOpenTasksFromList(listId);
     let completedTasks = await getAllCompletedTasksFromList(listId);
-    console.log(openTasks.concat(completedTasks));
+    //console.log(openTasks.concat(completedTasks));
+    return openTasks.concat(completedTasks);
   };
 
   const getAllOpenTasksFromList = async function(listId) {
@@ -67,13 +93,16 @@ const wunderlistHelper = function() {
   };
 
   return {
+    getAllLists: getAllLists,
     getListIdByName: getListIdByName,
     getAllTasksFromList: getAllTasksFromList,
     getAllOpenTasksFromList: getAllOpenTasksFromList,
     removeDueDateForATask: removeDueDateForATask,
     createList: createList,
     createTask: createTask,
-    createTaskFromList: createTaskFromList
+    createTaskFromList: createTaskFromList,
+    updateTaskInList: updateTaskInList,
+    createTaskInList: createTaskInList
   };
 };
 

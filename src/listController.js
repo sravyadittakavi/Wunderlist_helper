@@ -10,7 +10,7 @@ const ListController = function() {
     let currentWeekId = await todoHelper.getListIdByName(currentWeek);
 
     // HACK: for testing
-    currentWeekId = 396233857;
+    currentWeekId = 404586021;
 
     // Get next week list name
     let nextWeek = utils.getNextWeekListName();
@@ -20,7 +20,7 @@ const ListController = function() {
 
     // Get all incomplete items in the current week
     let openTasks = await todoHelper.getAllOpenTasksFromList(currentWeekId);
-
+    console.log(openTasks);
     // Remove due dates for all entries in the current list
     openTasks.map(async x => {
       return await todoHelper.removeDueDateForATask(x);
@@ -54,18 +54,37 @@ const ListController = function() {
 
   const getCategoryStats = function(listId) {
     if (!listId) {
-        let currentWeek = utils.getCurrentWeekListName();
-        listId = await todoHelper.getListIdByName(currentWeek);        
+      let currentWeek = utils.getCurrentWeekListName();
+      //  listId = await todoHelper.getListIdByName(currentWeek);
     }
 
     // Get all the tasks
-    let openTasks = await todoHelper.getAllOpenTasksFromList(currentWeekId);
+    // let openTasks = await todoHelper.getAllOpenTasksFromList(currentWeekId);
     // Compute the category stats
+  };
+
+  const updateTaskInList = async function(task, listId) {
+    if (!task.id) {
+      return await todoHelper.createTask(task);
+    } else {
+      return todoHelper.updateTaskInList(task, listId);
+    }
+  };
+
+  const getAllTasksInList = function(listId) {
+    return todoHelper.getAllTasksFromList(listId);
+  };
+
+  const allLists = function() {
+    return todoHelper.getAllLists();
   };
 
   return {
     setupNextWeek: setupNextWeek,
-    getCategoryStats:getCategoryStats
+    getCategoryStats: getCategoryStats,
+    allLists: allLists,
+    getAllTasksInList: getAllTasksInList,
+    updateTaskInList: updateTaskInList
   };
 };
 

@@ -8,7 +8,18 @@ var ListController = require("./listController");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 3000; // set our port
+var port = process.env.PORT || 5000; // set our port
+
+var allowCrossDomain = function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*"); // allow requests from any other server
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"); // allow these verbs
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Cache-Control"
+  );
+  next();
+};
+app.use(allowCrossDomain); // plumbing it in as middleware
 
 // middleware to use for all requests
 app.use(function(req, res, next) {
@@ -23,6 +34,28 @@ app.use("/setupNextWeek", function(req, res) {
     res.json(x);
   });
   // res.json();
+});
+
+app.post("/list/tasks", function(req, res) {
+  let controller = ListController();
+  console.log(req);
+  controller.updateTaskInList(req.body.task, req.body.id).then(function(x) {
+    res.json(x);
+  });
+});
+
+app.get("/list/tasks/:id", function(req, res) {
+  let controller = ListController();
+  controller.getAllTasksInList(req.params.id).then(function(x) {
+    res.json(x);
+  });
+});
+
+app.use("/all", function(req, res) {
+  let controller = ListController();
+  controller.allLists().then(function(x) {
+    res.send(x);
+  });
 });
 
 app.use("/stats", function(req, res) {
