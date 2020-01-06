@@ -28,11 +28,16 @@ app.use(function(req, res, next) {
   next(); // make sure we go to the next routes and don't stop here
 });
 
-app.use("/setupNextWeek", function(req, res) {
-  let controller = ListController();
-  controller.setupNextWeek().then(function(x) {
-    res.json(x);
-  });
+app.get("/setupNextWeek/:id", function(req, res) {
+  if (req.params.id) {
+    let controller = ListController();
+    console.log(req.params.id);
+    controller.setupNextWeek(req.params.id).then(function(x) {
+      res.json(x);
+    });
+  } else {
+    res.send("Enter previous list id");
+  }
   // res.json();
 });
 

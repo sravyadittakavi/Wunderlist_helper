@@ -4,13 +4,13 @@ const defaultTasks = require("./tasks.config");
 
 const todoHelper = wunderlistHelper();
 const ListController = function() {
-  const setupNextWeek = async function() {
+  const setupNextWeek = async function(lastWeekId) {
     // Get current week list name
     let currentWeek = utils.getCurrentWeekListName();
     let currentWeekId = await todoHelper.getListIdByName(currentWeek);
 
     // HACK: for testing
-    currentWeekId = 404586021;
+    currentWeekId = lastWeekId;
 
     // Get next week list name
     let nextWeek = utils.getNextWeekListName();
@@ -45,11 +45,19 @@ const ListController = function() {
     });
 
     newTasks = newTasks.concat(newDefaultTasks);
+    const result = [];
+    const map = new Map();
+    for (const item of newTasks) {
+      if (!map.has(item.title)) {
+        map.set(item.title, true);
+        result.push(item);
+      }
+    }
 
     // Create tasks in the new list from all incomplete tasks from last week
-    await todoHelper.createTaskFromList(newTasks);
+    await todoHelper.createTaskFromList(result);
 
-    return newTasks;
+    return result;
   };
 
   const getCategoryStats = function(listId) {

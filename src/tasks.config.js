@@ -1,6 +1,6 @@
 const defaultTasks = [
   "India - Call Vaar",
-  "Home- Wash clothes",
+  "Home - Wash clothes",
   "Home - Iron clothes",
   "Home - Sort clothes",
   "Home - Plan for weekend",
