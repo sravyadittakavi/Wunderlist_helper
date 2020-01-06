@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Task from "../Task";
 import AddTask from "../AddTask";
+import ActionBar from "../ActionBar";
 import styled from "styled-components";
 import * as utils from "../../shared/utils";
 
@@ -20,12 +21,26 @@ class index extends Component {
     this.onTaskCreated = this.onTaskCreated.bind(this);
     this.onEditTask = this.onEditTask.bind(this);
     this.onTaskUpdated = this.onTaskUpdated.bind(this);
+    this.onSetupNextWeek = this.onSetupNextWeek.bind(this);
     this.state = {
       id: this.props.match.params.id,
 
       tasks: [],
       listDate: this.getListEndDate(this.props.match.params.id)
     };
+  }
+
+  onSetupNextWeek(listId) {
+    console.log("Clicked setup next week: " + listId);
+    axios
+      .get(
+        process.env.REACT_APP_LIST_BASE_URL +
+          process.env.REACT_APP_SETUP_NEXT_WEEK +
+          listId
+      )
+      .then(response => {
+        this.props.refreshLists();
+      });
   }
 
   getTasks(listId) {
@@ -115,10 +130,14 @@ class index extends Component {
 
   updateTask(task, refresh = false) {
     axios
-      .post("http://localhost:5000/list/tasks", {
-        task: task,
-        id: this.state.id
-      })
+      .post(
+        process.env.REACT_APP_LIST_BASE_URL +
+          process.env.REACT_APP_GET_TASKS_IN_LIST,
+        {
+          task: task,
+          id: this.state.id
+        }
+      )
       .then(response => {
         this.setState(prevState => ({
           tasks: prevState.tasks.map(x => {
@@ -137,19 +156,26 @@ class index extends Component {
     console.log(this.state.tasks);
   }
   render() {
-    if (this.state.tasks.length == 0) {
-      return <h2>Loading tasks...</h2>;
-    } else {
-      return (
-        <div className={this.props.className}>
-          <div className="taskList">
-            <h2>Tasks</h2>
-            <AddTask
-              onTaskCreated={this.onTaskCreated}
-              listId={this.state.id}
-              dueDate={utils.getAllDaysInList(this.state.listDate)}
-            />
-            {this.state.tasks.map(x => (
+    // if (this.state.tasks.length == 0) {
+    //   return <h2>Loading tasks...</h2>;
+    // } else {
+    return (
+      <div className={this.props.className}>
+        <div className="taskList">
+          <h2>Tasks</h2>
+          <AddTask
+            onTaskCreated={this.onTaskCreated}
+            listId={this.state.id}
+            dueDate={utils.getAllDaysInList(this.state.listDate)}
+          />
+          <ActionBar
+            listId={this.state.id}
+            onSetupNextWeek={this.onSetupNextWeek}
+          ></ActionBar>
+          {this.state.tasks.length == 0 ? (
+            <h2>Loading tasks...</h2>
+          ) : (
+            this.state.tasks.map(x => (
               <Task
                 key={x.id}
                 task={x}
@@ -159,16 +185,14 @@ class index extends Component {
                 onEditTask={this.onEditTask}
                 onTaskUpdated={this.onTaskUpdated}
               />
-            ))}
-          </div>
-          {/* <div className="add">
-         
-          </div> */}
+            ))
+          )}
         </div>
-      );
-    }
+      </div>
+    );
   }
 }
+//}
 
 const StyledIndex = styled(index)`
   & {

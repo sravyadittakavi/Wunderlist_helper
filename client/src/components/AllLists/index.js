@@ -12,13 +12,21 @@ class index extends Component {
     this.state = {
       lists: []
     };
+    this.refreshLists = this.refreshLists.bind(this);
   }
 
   componentDidMount() {
     // TODO: Make a call to API
+    this.refreshLists();
+  }
+
+  refreshLists() {
+    console.log("refreshed");
+    this.setState({
+      lists: []
+    });
     let url =
       process.env.REACT_APP_LIST_BASE_URL + process.env.REACT_APP_GET_ALL_LISTS;
-
     axios.get(url).then(response =>
       this.setState({
         lists: response.data.sort((x, y) => -1)
@@ -41,7 +49,11 @@ class index extends Component {
             <Route
               path="/todo/:id"
               render={routeProps => (
-                <ListPage {...routeProps} lists={this.state.lists} />
+                <ListPage
+                  {...routeProps}
+                  lists={this.state.lists}
+                  refreshLists={this.refreshLists}
+                />
               )}
             />
           </div>

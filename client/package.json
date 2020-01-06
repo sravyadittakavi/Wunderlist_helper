@@ -1,5 +1,6 @@
 {
   "name": "client",
+  "homepage": "http://raghav-rt.me/checklist",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "build:prod": "REACT_APP_LIST_BASE_URL=http://checklist.raghav-rt.me/ npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
