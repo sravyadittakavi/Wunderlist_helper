@@ -46,7 +46,6 @@ class index extends Component {
         </div>
         <div className="right">
           <div className="taskBoard">
-            List items:
             <Route
               path="/todo/:id"
               render={routeProps => (
