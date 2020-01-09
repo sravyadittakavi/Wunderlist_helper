@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import ListItem from "../ListItem";
+import ListItem from "../ListItem"; 
 import { Link, Route, Switch, withRouter } from "react-router-dom";
 import ListPage from "../ListPage";
 import styled from "styled-components";
@@ -15,7 +15,7 @@ class index extends Component {
     this.refreshLists = this.refreshLists.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount() {    
     // TODO: Make a call to API
     this.refreshLists();
   }
