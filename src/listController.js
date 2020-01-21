@@ -79,6 +79,14 @@ const ListController = function() {
     }
   };
 
+  const deleteTaskInList = async function(task, listid){
+    if (!task.id) {
+      return await todoHelper.createTask(task);
+    } else {
+      return todoHelper.deleteTaskInList(task);
+    }
+  };
+
   const getAllTasksInList = function(listId) {
     return todoHelper.getAllTasksFromList(listId);
   };
@@ -92,7 +100,8 @@ const ListController = function() {
     getCategoryStats: getCategoryStats,
     allLists: allLists,
     getAllTasksInList: getAllTasksInList,
-    updateTaskInList: updateTaskInList
+    updateTaskInList: updateTaskInList,
+    deleteTaskInList: deleteTaskInList
   };
 };
 
