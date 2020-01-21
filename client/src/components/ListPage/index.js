@@ -21,6 +21,8 @@ class index extends Component {
     this.onTaskCreated = this.onTaskCreated.bind(this);
     this.onEditTask = this.onEditTask.bind(this);
     this.onTaskUpdated = this.onTaskUpdated.bind(this);
+    this.onTaskDeleted = this.onTaskDeleted.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
     this.onSetupNextWeek = this.onSetupNextWeek.bind(this);
     this.state = {
       id: this.props.match.params.id,
@@ -155,6 +157,27 @@ class index extends Component {
 
     console.log(this.state.tasks);
   }
+
+  onTaskDeleted(task) {
+    console.log("entered");
+    this.deleteTask(task);
+  };
+
+  deleteTask(task){
+    console.log(process.env.REACT_APP_LIST_BASE_URL +
+      process.env.REACT_APP_DELETE_TASK_IN_LIST);
+axios.post(process.env.REACT_APP_LIST_BASE_URL +
+      process.env.REACT_APP_DELETE_TASK_IN_LIST,
+    {
+      task: task,
+      id: this.state.id
+    })
+    .then(response => {
+      this.getTasks(this.state.id);
+      console.log(response.data);
+    });
+  };
+
   render() {
     // if (this.state.tasks.length == 0) {
     //   return <h2>Loading tasks...</h2>;
@@ -183,6 +206,7 @@ class index extends Component {
                 listId={this.state.id}
                 dueDate={utils.getAllDaysInList(this.state.listDate)}
                 onEditTask={this.onEditTask}
+                onTaskDeleted={this.onTaskDeleted}
                 onTaskUpdated={this.onTaskUpdated}
               />
             ))

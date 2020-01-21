@@ -15,6 +15,14 @@ class index extends Component {
       />
     ) : (
       <div className={this.props.className}>
+         <label>
+          <input
+            type="button"
+            className="submit"
+            value="X"
+            onClick={() => this.props.onTaskDeleted(this.props.task)}
+          />
+        </label>
         <label>
           <input
             type="button"

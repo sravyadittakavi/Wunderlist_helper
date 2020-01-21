@@ -49,6 +49,14 @@ app.post("/list/tasks", function(req, res) {
   });
 });
 
+app.post("/list/tasks/delete", function(req,res){
+  let controller = ListController();
+  console.log(req);
+  controller.deleteTaskInList(req.body.task, req.body.id).then(function(x){
+    res.json(x);
+  });
+});
+
 app.get("/list/tasks/:id", function(req, res) {
   let controller = ListController();
   controller.getAllTasksInList(req.params.id).then(function(x) {
@@ -72,6 +80,7 @@ app.use("/stats", function(req, res) {
 
 app.use("/", function(req, res) {
   var utils = require("./utils")();
+  console.log("HERE")
   res.json(utils.getCurrentWeekListName());
 });
 

@@ -39,6 +39,15 @@ const wunderlistHelper = function() {
     return data;
   };
 
+  const deleteTaskInList = async function(task) {
+    var taskID = task.id;
+    var taskRevision = task.revision;
+    let data = await wunderlistAPI.http.tasks.deleteID(taskID, taskRevision);
+    console.log(`data:`);
+    console.log(data);
+    return data;
+  };
+
   const createTaskInList = async function(title, listId) {
     console.log({
       title: title,
@@ -102,7 +111,8 @@ const wunderlistHelper = function() {
     createTask: createTask,
     createTaskFromList: createTaskFromList,
     updateTaskInList: updateTaskInList,
-    createTaskInList: createTaskInList
+    createTaskInList: createTaskInList,
+    deleteTaskInList: deleteTaskInList
   };
 };
 
