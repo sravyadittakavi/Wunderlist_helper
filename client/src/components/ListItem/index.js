@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 class index extends Component {
   render() {
     return (
-      <Link className={this.props.className} to={"/todo/" + this.props.id}>
+      <NavLink className={this.props.className} to={"/todo/" + this.props.id} activeClassName="active">
         <div>{this.props.title}</div>
-      </Link>
+      </NavLink>
     );
   }
 }
@@ -15,13 +15,21 @@ class index extends Component {
 const StyledIndex = styled(index)`
   & {
     text-decoration: none;
+    background-color: #ececec;
+    color: #333;
     div {
       padding: 10px;
       text-align: left;
-      background-color: #ececec;
+      background-color: inherit;
       border: 2px solid #ccc;
-      color: #333;
     }
+
+    &.active{
+      background-color: #647687;
+      color:#fff ;
+      font-weight:bold;
+    }
+   
   }
 `;
 
