@@ -82,7 +82,6 @@ class index extends Component {
   }
 
   render() {
-    console.log(this.props.Task)
     return (
       <div className={this.props.className}>
         <input
@@ -104,7 +103,7 @@ class index extends Component {
         <input
           type="button"
           className="submit"
-          value={this.props.task?"Save":"Add"}
+          value={this.props.task ? "Save" : "Add"}
           onClick={this.onTaskCreated}
         />
       </div>

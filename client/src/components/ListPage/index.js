@@ -24,6 +24,7 @@ class index extends Component {
     this.onTaskDeleted = this.onTaskDeleted.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
     this.onSetupNextWeek = this.onSetupNextWeek.bind(this);
+    this.sortList = this.sortList.bind(this);
     this.state = {
       id: this.props.match.params.id,
 
@@ -31,6 +32,12 @@ class index extends Component {
       listDate: this.getListEndDate(this.props.match.params.id)
     };
   }
+
+  SortOptions = {
+    Name: "Name",
+    DueDate: "DueDate",
+    TaskName: "TaskName"
+  };
 
   onSetupNextWeek(listId) {
     console.log("Clicked setup next week: " + listId);
@@ -161,22 +168,40 @@ class index extends Component {
   onTaskDeleted(task) {
     console.log("entered");
     this.deleteTask(task);
-  };
+  }
 
-  deleteTask(task){
-    console.log(process.env.REACT_APP_LIST_BASE_URL +
-      process.env.REACT_APP_DELETE_TASK_IN_LIST);
-axios.post(process.env.REACT_APP_LIST_BASE_URL +
-      process.env.REACT_APP_DELETE_TASK_IN_LIST,
-    {
-      task: task,
-      id: this.state.id
-    })
-    .then(response => {
-      this.getTasks(this.state.id);
-      console.log(response.data);
-    });
-  };
+  deleteTask(task) {
+    console.log(
+      process.env.REACT_APP_LIST_BASE_URL +
+        process.env.REACT_APP_DELETE_TASK_IN_LIST
+    );
+    axios
+      .post(
+        process.env.REACT_APP_LIST_BASE_URL +
+          process.env.REACT_APP_DELETE_TASK_IN_LIST,
+        {
+          task: task,
+          id: this.state.id
+        }
+      )
+      .then(response => {
+        this.getTasks(this.state.id);
+        console.log(response.data);
+      });
+  }
+  sortList(sortOption) {
+    switch (sortOption) {
+      case this.SortOptions.Name: {
+      }
+    }
+    console.log("entered");
+    let newTasks = Object.assign([], this.state.tasks);
+    newTasks.sort((x, y) => x.title - y.title);
+    console.log(newTasks);
+    this.setState(prevState => ({
+      tasks: newTasks
+    }));
+  }
 
   render() {
     // if (this.state.tasks.length == 0) {
@@ -194,6 +219,7 @@ axios.post(process.env.REACT_APP_LIST_BASE_URL +
           <ActionBar
             listId={this.state.id}
             onSetupNextWeek={this.onSetupNextWeek}
+            onSortChange={this.sortList}
           ></ActionBar>
           {this.state.tasks.length == 0 ? (
             <h2>Loading tasks...</h2>
