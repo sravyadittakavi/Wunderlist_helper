@@ -220,6 +220,8 @@ class index extends Component {
             listId={this.state.id}
             onSetupNextWeek={this.onSetupNextWeek}
             onSortChange={this.sortList}
+            totalItemCount={this.state.tasks.length}
+            completedItemCount={this.state.tasks.filter(x=>x.completed).length}
           ></ActionBar>
           {this.state.tasks.length == 0 ? (
             <h2>Loading tasks...</h2>
