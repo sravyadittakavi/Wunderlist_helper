@@ -27,6 +27,8 @@ class index extends Component {
     this.onTitleChange = this.onTitleChange.bind(this);
     this.onCategoryChange = this.onCategoryChange.bind(this);
     this.onDueDateSelected = this.onDueDateSelected.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
+
     this.dates = [];
     for (const [key, value] of Object.entries(this.props.dueDate)) {
       this.dates.push(
@@ -46,7 +48,13 @@ class index extends Component {
       );
     }
   }
-
+  onKeyUp(e) {
+    console.log(e.keyCode);
+    console.log(this.props.dueDate);
+    this.setState({
+      dueDate: new Date(Object.entries(this.props.dueDate)[0][1])
+    });
+  }
   onTaskCreated() {
     let task = {
       title: this.state.category + " - " + this.state.title,
@@ -83,7 +91,7 @@ class index extends Component {
 
   render() {
     return (
-      <div className={this.props.className}>
+      <div className={this.props.className} onKeyDown={e => this.onKeyUp(e)}>
         <input
           type="text"
           placeholder="category"
@@ -114,9 +122,11 @@ class index extends Component {
 const StyledIndex = styled(index)`
   & {
     padding: 10px;
-    background-color: #f7f7f7;
+    background-color: #3b4650;
+    color: #fff;
     padding: 7px 10px;
     margin: 5px 0px;
+    margin-top: 0px;
   }
   .separator {
     margin: 0px 3px;

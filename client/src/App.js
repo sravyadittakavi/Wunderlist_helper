@@ -14,7 +14,7 @@ function App(props) {
 
 const StyledApp = styled(App)`
   & {
-    margin: 10px 0px;
+    margin: 1px 0px;
   }
 `;
 
