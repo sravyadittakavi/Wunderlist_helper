@@ -29,7 +29,7 @@ class index extends Component {
       process.env.REACT_APP_LIST_BASE_URL + process.env.REACT_APP_GET_ALL_LISTS;
     axios.get(url).then(response =>
       this.setState({
-        lists: response.data.sort((x, y) => -1).slice(1, 20)
+        lists: response.data.sort((x, y) => -1).slice(0, 20)
       })
     );
   }
