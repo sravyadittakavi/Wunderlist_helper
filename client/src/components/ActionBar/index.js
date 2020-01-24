@@ -11,16 +11,32 @@ class index extends Component {
             type="radio"
             value="Name"
             name="sortOptions"
-            onChange={this.props.onSortChange}
+            onChange={() =>
+              this.props.onSortChange(this.props.SortOptions.Name)
+            }
           />
           Name
         </label>
         <label>
-          <input type="radio" value="Name" name="sortOptions" />
+          <input
+            type="radio"
+            value="Name"
+            name="sortOptions"
+            onChange={() =>
+              this.props.onSortChange(this.props.SortOptions.DueDate)
+            }
+          />
           Due date
         </label>
         <label>
-          <input type="radio" value="Name" name="sortOptions" />
+          <input
+            type="radio"
+            value="Name"
+            name="sortOptions"
+            onChange={() =>
+              this.props.onSortChange(this.props.SortOptions.TaskName)
+            }
+          />
           Task name
         </label>
         <label className="setup-next-week">
@@ -40,7 +56,8 @@ class index extends Component {
 
 const StyledActionBar = styled(index)`
   & {
-    background-color: #f7f7f7;
+    background-color: #647687;
+    color: #fff;
     padding: 10px;
     margin: 5px 0px;
     cursor: pointer;

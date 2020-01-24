@@ -27,9 +27,9 @@ class index extends Component {
     this.sortList = this.sortList.bind(this);
     this.state = {
       id: this.props.match.params.id,
-
       tasks: [],
-      listDate: this.getListEndDate(this.props.match.params.id)
+      listDate: this.getListEndDate(this.props.match.params.id),
+      sortOption: ""
     };
   }
 
@@ -63,9 +63,10 @@ class index extends Component {
           listId
       )
       .then(response => {
-        this.setState({
-          tasks: response.data
-        });
+        this.sortList(this.state.sortOption, response.data);
+        // this.setState({
+        //   tasks: response.data
+        // });
       });
   }
 
@@ -186,19 +187,34 @@ class index extends Component {
       )
       .then(response => {
         this.getTasks(this.state.id);
-        console.log(response.data);
       });
   }
-  sortList(sortOption) {
+  sortList(sortOption, tasks = []) {
+    let newTasks = Object.assign(
+      [],
+      tasks.length > 0 ? tasks : this.state.tasks
+    );
+    let completedTasks = newTasks.filter(x => x.completed);
+    let openTasks = newTasks.filter(x => !x.completed);
     switch (sortOption) {
       case this.SortOptions.Name: {
+        openTasks.sort((x, y) => (x.title > y.title ? 1 : -1));
+        break;
+      }
+      case this.SortOptions.DueDate: {
+        openTasks.sort((x, y) => (x.due_date > y.due_date ? 1 : -1));
+        break;
+      }
+      case this.SortOptions.TaskName: {
+        openTasks.sort((x, y) =>
+          x.title.split("-")[1].trim() > y.title.split("-")[1].trim() ? 1 : -1
+        );
+        break;
       }
     }
-    console.log("entered");
-    let newTasks = Object.assign([], this.state.tasks);
-    newTasks.sort((x, y) => x.title - y.title);
-    console.log(newTasks);
+    newTasks = [...openTasks, ...completedTasks];
     this.setState(prevState => ({
+      sortOption: sortOption,
       tasks: newTasks
     }));
   }
@@ -210,7 +226,6 @@ class index extends Component {
     return (
       <div className={this.props.className}>
         <div className="taskList">
-          <h2>Tasks</h2>
           <AddTask
             onTaskCreated={this.onTaskCreated}
             listId={this.state.id}
@@ -222,6 +237,7 @@ class index extends Component {
             onSortChange={this.sortList}
             totalItemCount={this.state.tasks.length}
             completedItemCount={this.state.tasks.filter(x=>x.completed).length}
+            SortOptions={this.SortOptions}
           ></ActionBar>
           {this.state.tasks.length == 0 ? (
             <h2>Loading tasks...</h2>

@@ -15,7 +15,7 @@ class index extends Component {
       />
     ) : (
       <div className={this.props.className}>
-         <label>
+        <label>
           <input
             type="button"
             className="submit"
@@ -61,7 +61,7 @@ class index extends Component {
 
 const StyledIndex = styled(index)`
   & {
-    background-color: #f7f7f7;
+    background-color: ${props => (props.task.completed ? "#ccc" : "#f7f7f7")};
     padding: 10px;
     margin: 5px 0px;
     cursor: pointer;
